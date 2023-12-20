@@ -1,8 +1,0 @@
-# Turn rewrite engine on
-Options +FollowSymlinks
-RewriteEngine on
-
-# map neat URL to internal URL
-RewriteRule ^grupoelementos/$   /4p1/GrupoElementosController.php [nc,qsa]
-
-
