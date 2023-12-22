@@ -1,7 +1,7 @@
 <?php
 include_once("4p1_core.php");
 include_once("GrupoElemento.php");
-// 1.23.185
+// 1.23.185 - Nuevo Cambio!
 // get the HTTP method, path and body of the request
 $method = $_SERVER['REQUEST_METHOD'];
 if ($method == 'GET') {
