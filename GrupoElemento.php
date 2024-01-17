@@ -1,9 +1,7 @@
 <?php
 require_once("dbcontroller.php");
 // 1.23.185
-/* Aqui estuvo Christian
-A domain Class to demonstrate RESTful web services
-*/
+
 Class GrupoElemento {
 	private $grupoelementos = array();
 	public function getAllGrupoElemento(){

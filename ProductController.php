@@ -7,13 +7,12 @@ if ($method == 'POST') {
 	$token = getBearerToken();
 	$message = '';
 	if ( !SessionValidateR2($token, $message) ) {
-		http_response_code(401);
 		$respuesta = array(	"success" 	=> false,
 							"name" 		=> "UNAUTHORIZED",
 							"message" 	=> "La sesion del Usuario ha expirado. Se requiere un nuevo Token.",
 							"code"		=> "401.1"
 		);
-		echo json_encode($respuesta);
+		echo returnData(401, $respuesta);
 		die();
 	} else {
 
@@ -62,19 +61,19 @@ if ($method == 'POST') {
 				$statusCode = 201;
 			}
 		}
-		http_response_code($statusCode);
-		echo json_encode($rawData);
+		echo returnData($statusCode, $rawData);
 	}
 } // if ($method == 'POST')
-else {
+elseif ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
+		echo returnData(200, '');
+    exit;
+} else {
 		http_response_code(405);
 		$respuesta = array(	"success" 	=> false,
 							"name" 		=> "METHOD NOT ALLOWED",
 							"message" 	=> "Metodo NO permitido.",
 							"code"		=> "405.1"
 		);
-		echo json_encode($respuesta);
+		echo returnData(405, $respuesta);
 }
-
-
 ?>

@@ -1,8 +1,6 @@
 <?php
 require_once("dbcontroller.php");
-/*
-A domain Class to demonstrate RESTful web services
-*/
+
 Class Product {
 	private $tabla = 'T_PRODUCTOS';
 	private $insert_fields = array();
