@@ -7,7 +7,17 @@ $method = $_SERVER['REQUEST_METHOD'];
 if ($method == 'GET') {
 	$token = getBearerToken();
 	$message = '';
-	if ( !SessionValidateR2($token, $message) ) {
+	$AgrupacionExtra   = $_GET["AgrupacionExtra"];
+	if (!isset($AgrupacionExtra)) {
+		http_response_code(400);
+		$respuesta = array(	"success" 	=> false,
+												"name" 			=> "BAD REQUEST",
+												"message" 	=> "Parametro AgrupacionExtra NO enviado.",
+												"code"			=> "400.1"
+								);
+		echo returnData(400, $respuesta);
+		die();
+	} elseif ( !SessionValidateR2($token, $message) ) {
 		$respuesta = array(	"success" 	=> false,
 							"name" 		=> "UNAUTHORIZED",
 							"message" 	=> "La sesion del Usuario ha expirado. Se requiere un nuevo Token. O hubo error en el llamado. Error:". $message,
@@ -17,7 +27,7 @@ if ($method == 'GET') {
 		die();
 	} else {
 		$ElementosPorGrupo 	= new ElementosPorGrupo();
-		$elemntData 	= $ElementosPorGrupo->getAllElementosPorGrupo();
+		$elemntData 	= $ElementosPorGrupo->getAllElementosPorGrupo($AgrupacionExtra);
 
 		if(empty($elemntData)) {
 			$statusCode = 404;

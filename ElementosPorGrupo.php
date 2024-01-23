@@ -4,11 +4,11 @@ require_once("dbcontroller.php");
 
 Class ElementosPorGrupo {
 	private $elementosporgrupo = array();
-	public function getAllElementosPorGrupo(){
+	public function getAllElementosPorGrupo($AgrupacionExtra){
 		$query = "SELECT T_PRODUCTOS.COD_PRODUCTO, T_PRODUCTOS.NOM_PRODUCTO, T_PRODUCTOS.DESC_GONDOLA, R_PRODUCTO_IMAGENES.URL
 							FROM   R_PRODUCTO_IMAGENES
 								INNER JOIN T_PRODUCTOS  ON R_PRODUCTO_IMAGENES.COD_PRODUCTO = T_PRODUCTOS.COD_PRODUCTO
-							WHERE AGRUPACION_EXTRA  = 230";
+							WHERE AGRUPACION_EXTRA  = " . $AgrupacionExtra;
 		$dbcontroller = new DBController();
 		$this->elementosporgrupo = $dbcontroller->executeSelectQuery($query);
 		return $this->elementosporgrupo;
