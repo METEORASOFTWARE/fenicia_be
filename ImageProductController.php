@@ -30,7 +30,8 @@ if ($method == 'POST') {
 												"message" 	=> "Parametro consecutivo NO enviado.",
 												"code"			=> "400.2"
 			);
-		} elseif (empty($_FILES["imagen"])) {
+		//} elseif (empty($_FILES["imagen"])) {
+		} elseif (empty($_POST["imagen"])) {
 			$statusCode = 400;
 			$rawData =	array(	"success" 	=> false,
 												"name" 			=> "BAD REQUEST",

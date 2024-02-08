@@ -2,7 +2,14 @@
 require_once("ParFenicia.php");
 
 function upload(&$url, &$error, &$error_code){
-  $img_file = $_FILES["imagen"];
+  //$img_file = $_FILES["imagen"];
+
+  //Modificación manejando base64
+  $image_parts = explode(";base64,", $_POST['imagen']);
+  $image_type_aux = explode("image/", $image_parts[0]);
+  
+  $img_file = base64_decode($image_parts[1]);
+
   //var_dump($img_file);
   $error  = '';
   $url    = '';
@@ -22,7 +29,8 @@ function upload(&$url, &$error, &$error_code){
     } else {
 
       // Validando tipo
-      $img_type = exif_imagetype($img_file["tmp_name"]);
+      //$img_type = exif_imagetype($img_file["tmp_name"]);
+      $img_type = $image_type_aux[1];
       if (!$img_type) {
         $error = 'El archivo subido NO es una imagen.';
         $error_code = "400.6";
