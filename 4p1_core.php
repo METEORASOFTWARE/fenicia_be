@@ -3,11 +3,43 @@
 
 	/* Funciones Propias de la API */
 	function SessionValidateR2($token, &$message) {
-	  //echo "Entro a SessionValidateR2";
+		//echo "Entro a SessionValidateR2 usando curl";
+		$curl = curl_init();
+
+		curl_setopt_array($curl, array(
+		  CURLOPT_URL => 'https://fenicia.meteoracolombia.co:8443/admin/realms/meteora/users/7fecb76b-198c-4f75-8003-aac34daafa50/sessions',
+		  CURLOPT_RETURNTRANSFER => true,
+		  CURLOPT_ENCODING => '',
+		  CURLOPT_MAXREDIRS => 10,
+		  CURLOPT_TIMEOUT => 0,
+		  CURLOPT_FOLLOWLOCATION => true,
+		  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+		  CURLOPT_CUSTOMREQUEST => 'GET',
+		  CURLOPT_SSL_VERIFYHOST => false,
+		  CURLOPT_SSL_VERIFYPEER => false, 
+		  CURLOPT_HTTPHEADER => array(
+			'Authorization: Bearer ' . $token
+		  ),
+		));
+		
+		$response = curl_exec($curl);
+		if ($response === false) {
+			$message =  'Error: ' . curl_error($curl);
+			curl_close($curl);
+			return false;			
+		} else {
+			$message = 'Ok';
+			curl_close($curl);
+			return true;
+		}
+	  }
+  
+	function SessionValidateR3($token, &$message) {
+	  //echo "Entro a SessionValidateR3";
 	  require_once 'HTTP/Request2.php';
 	  $request = new HTTP_Request2();
-	  $request->setUrl('http://fenicia.meteoracolombia.co:8080/admin/realms/meteora/users/7fecb76b-198c-4f75-8003-aac34daafa50/sessions');
-	  //$request->setUrl('https://fenicia.meteoracolombia.co:8443/admin/realms/meteora/users/7fecb76b-198c-4f75-8003-aac34daafa50/sessions');	  
+	  //$request->setUrl('http://fenicia.meteoracolombia.co:8080/admin/realms/meteora/users/7fecb76b-198c-4f75-8003-aac34daafa50/sessions');
+	  $request->setUrl('https://fenicia.meteoracolombia.co:8443/admin/realms/meteora/users/7fecb76b-198c-4f75-8003-aac34daafa50/sessions');	  
 	  $request->setMethod(HTTP_Request2::METHOD_GET);
 	  $request->setConfig(array(
 		'follow_redirects' => TRUE
