@@ -6,8 +6,8 @@
 	  //echo "Entro a SessionValidateR2";
 	  require_once 'HTTP/Request2.php';
 	  $request = new HTTP_Request2();
-	  //$request->setUrl('http://206.189.189.123:8080/admin/realms/4p1/users/3e8f3e80-ba67-4cb5-95da-bd6ff573f7e1/sessions');
-	  $request->setUrl('http://fenicia.meteoracolombia.co:8080/admin/realms/meteora/users/7fecb76b-198c-4f75-8003-aac34daafa50/sessions');
+	  //$request->setUrl('http://fenicia.meteoracolombia.co:8080/admin/realms/meteora/users/7fecb76b-198c-4f75-8003-aac34daafa50/sessions');
+	  $request->setUrl('https://fenicia.meteoracolombia.co:8443/admin/realms/meteora/users/7fecb76b-198c-4f75-8003-aac34daafa50/sessions');	  
 	  $request->setMethod(HTTP_Request2::METHOD_GET);
 	  $request->setConfig(array(
 		'follow_redirects' => TRUE
