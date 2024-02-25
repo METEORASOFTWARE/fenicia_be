@@ -3,7 +3,37 @@
 
 	/* Funciones Propias de la API */
 	function SessionValidateR2($token, &$message) {
-		//echo "Entro a SessionValidateR2 usando curl";
+	  //echo "Entro a SessionValidateR2";
+	  require_once 'HTTP/Request2.php';
+	  $request = new HTTP_Request2();
+	  $request->setUrl('https://fenicia.meteoracolombia.co:8443/admin/realms/meteora/users/7fecb76b-198c-4f75-8003-aac34daafa50/sessions');	  
+	  $request->setMethod(HTTP_Request2::METHOD_GET);
+	  $request->setConfig(array(
+		'follow_redirects' => TRUE
+	  ));
+	  $request->setHeader(array(
+		'Authorization' => 'Bearer ' . $token
+	  ));
+	  try {
+		$response = $request->send();
+		if ($response->getStatus() == 200) {
+		  $message = 'Ok';
+		  return true;
+		}
+		else {
+		  $message =  'Unexpected HTTP status: ' . $response->getStatus() . ' ' . $response->getReasonPhrase();
+		  return false;
+		}
+	  }
+	  catch(HTTP_Request2_Exception $e) {
+		$message =  'Error: ' . $e->getMessage();
+		return false;
+	  }
+	 return false;
+	}
+
+	function SessionValidateR3($token, &$message) {
+		//echo "Entro a SessionValidateR3 usando curl";
 		$curl = curl_init();
 
 		curl_setopt_array($curl, array(
@@ -34,38 +64,8 @@
 		}
 	  }
   
-	function SessionValidateR3($token, &$message) {
-	  //echo "Entro a SessionValidateR3";
-	  require_once 'HTTP/Request2.php';
-	  $request = new HTTP_Request2();
-	  //$request->setUrl('http://fenicia.meteoracolombia.co:8080/admin/realms/meteora/users/7fecb76b-198c-4f75-8003-aac34daafa50/sessions');
-	  $request->setUrl('https://fenicia.meteoracolombia.co:8443/admin/realms/meteora/users/7fecb76b-198c-4f75-8003-aac34daafa50/sessions');	  
-	  $request->setMethod(HTTP_Request2::METHOD_GET);
-	  $request->setConfig(array(
-		'follow_redirects' => TRUE
-	  ));
-	  $request->setHeader(array(
-		'Authorization' => 'Bearer ' . $token
-	  ));
-	  try {
-		$response = $request->send();
-		if ($response->getStatus() == 200) {
-		  $message = 'Ok';
-		  return true;
-		}
-		else {
-		  $message =  'Unexpected HTTP status: ' . $response->getStatus() . ' ' . $response->getReasonPhrase();
-		  return false;
-		}
-	  }
-	  catch(HTTP_Request2_Exception $e) {
-		$message =  'Error: ' . $e->getMessage();
-		return false;
-	  }
-	 return false;
-	}
 
-	function SessionValidateCurl($token, &$message) {
+	  function SessionValidateCurl($token, &$message) {
 	/*  $curl = curl_init();
 
 	  curl_setopt_array($curl, array(
