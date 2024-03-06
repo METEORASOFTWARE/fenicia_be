@@ -52,11 +52,27 @@ class DBController {
 
 	function executeSelectQuery($query) {
 		$result = sqlsrv_query($this->conn,$query);
-		while ($row = sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC)) {
-			$resultset[] = $row;
+		if( $result === false ) {
+			http_response_code(503);
+			$respuesta = array(	"success" 	=> false,
+				"name" 		=> "SQL ERROR",
+				"message" 	=> "No se pudo realizar la siguiente consulta la informacion en la Base de Datos en el servidor " . $this->host . " Db: " . $this->database,
+				"code"		=> "503.3",
+				"sql_error" => sqlsrv_errors()
+			);
+			echo returnData(503, $respuesta);
+			//echo json_encode($respuesta);
+			//die( print_r( sqlsrv_errors(), true));
+			die();
+
+			//die( print_r( sqlsrv_errors(), true));
+	   } else {
+			while ($row = sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC)) {
+				$resultset[] = $row;
+			}
+			if(!empty($resultset))
+				return $resultset;
 		}
-		if(!empty($resultset))
-			return $resultset;
 	}
 }
 ?>
