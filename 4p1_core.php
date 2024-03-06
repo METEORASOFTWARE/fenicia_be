@@ -192,5 +192,44 @@ function returnData($statusCode, $data){
 
 	http_response_code($statusCode);
 
+	//Escribiendo el log para revisar los mensajes recibidos y los devueltos
+	//Escribiendo el dato de entrada
+	logFile(date("d/M/Y h:i:s A") );
+	logFile('Url: ' . $_SERVER['REQUEST_URI']);
+	logFile('Datos de Entrada');
+	$method = $_SERVER['REQUEST_METHOD'];
+	switch ($method) {
+		case 'GET':
+			logFile($_GET);
+		  	break;
+		case 'POST':
+			logFile($_POST);
+		  	break;
+	  }
+	//Escribiendo el dato de salida
+	logFile('Datos de Salida');
+	logFile('Status: ' . $statusCode);
+	logFile($data);
+	logFile('----------------------------');
+
 	return json_encode($data);
+}
+
+function logFile ($mensajeLog){
+	$filename = 'feniciaWS.log';
+
+	if (is_array($mensajeLog)) {
+		$mensaje = json_encode($mensajeLog).PHP_EOL;
+	} else {
+		$mensaje = $mensajeLog.PHP_EOL;
+	}
+	// Let's make sure the file exists and is writable first.
+	if ($fp = fopen($filename, 'a')) {
+		// Write $mensaje to our opened file.
+		fwrite($fp, $mensaje);
+	}	
+
+	fclose($fp);
+	
+
 }
