@@ -8,21 +8,21 @@ Class AccesoPWA {
 
 	public function addAccesoPWA(){
 		$pwaid  	= $_POST['pwaid'];
-		// $fechahora  = $_POST['fechahora'];
+		$fechahora  = $_POST['fechahora'];
 		$ip 		= $_POST['ip'];
 		$usuario	= $_POST['usuario'];
 		
 
 		$this->insert_fields = array(
 			'PWA_ID'	=> 	'?',
-			// 'FECHA_HORA'   	=> 	'?',
+			'FECHA_HORA'   	=> 	'?',
 			'IP'  => 	'?',
 			'USUARIO'  	=> 	'?'
 		 );
 
 		$this->insert_values = array(
 			"'" . $pwaid . "'",
-			// "'" . $fechahora . "'",
+			'getdate()',
 			"'" . $ip . "'",
 			"'" . $usuario . "'"
 		);
