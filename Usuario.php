@@ -22,7 +22,7 @@ Class Usuario {
 			'TIPO_CLIENTE' 	=> 	'?',
 			'CELULAR' 			=> 	'?',
 			'E_MAIL' 			=> 	'?',
-//			'FECHA_CREACION' 	=> 	'?',
+			'FECHA_CREACION' 	=> 	'?',
 			'COD_SUCURSAL' 	    => 	'?',
 			'PWA_ID' 	=> 	'?',
 		 );
@@ -36,7 +36,7 @@ Class Usuario {
 			"'F'",
 			 "'" . $telefono . "'",
 			 "'" . $email . "'",
-//			 "03/13/2024 16:00:00",
+			date("Y-m-d h:i"),
 			 "'PPAL'",
 			 "'" . $pwaid . "'"
 		);
