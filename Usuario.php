@@ -36,7 +36,7 @@ Class Usuario {
 			"'F'",
 			 "'" . $telefono . "'",
 			 "'" . $email . "'",
-			date("Y-m-d h:i"),
+			'getdate()',
 			 "'PPAL'",
 			 "'" . $pwaid . "'"
 		);

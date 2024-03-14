@@ -40,7 +40,7 @@ class DBController {
 							"name" 			=> "INTERNAL SERVER ERROR",
 							"message" 	=> "No se pudo guardar la informacion en la Base de Datos en el servidor " . $this->host . " Db: " . $this->database,
 							"code"			=> "503.2",
-							"sql_error" => sqlsrv_errors()
+							"sql_error" => sqlsrv_errors()  . " / SQL: " . $query
 						);
 						echo json_encode($respuesta);
 						//die( print_r( sqlsrv_errors(), true));
@@ -58,7 +58,7 @@ class DBController {
 				"name" 		=> "SQL ERROR",
 				"message" 	=> "No se pudo realizar la siguiente consulta la informacion en la Base de Datos en el servidor " . $this->host . " Db: " . $this->database,
 				"code"		=> "503.3",
-				"sql_error" => sqlsrv_errors()
+				"sql_error" => sqlsrv_errors() . " / SQL: " . $query
 			);
 			echo returnData(503, $respuesta);
 			//echo json_encode($respuesta);
