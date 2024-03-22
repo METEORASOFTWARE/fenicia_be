@@ -205,7 +205,15 @@ function returnData($statusCode, $data){
 		case 'POST':
 			logFile($_POST);
 		  	break;
-	  }
+		case 'PUT':
+			$_PUT = getParameter('PUT');
+			logFile($_PUT);
+			break;
+		case 'DELETE':
+			$_DELETE = getParameter('DELETE');
+			logFile($_DELETE);
+			break;
+		  }
 	//Escribiendo el dato de salida
 	logFile('Datos de Salida');
 	logFile('Status: ' . $statusCode);
@@ -232,4 +240,56 @@ function logFile ($mensajeLog){
 	fclose($fp);
 	
 
+}
+
+if (!function_exists("getParameter")){
+    function getParameter($parameter) {
+        $value=null;
+        if(($_SERVER['REQUEST_METHOD'] == 'POST')&& (isset($_POST[$parameter]))){
+            $value=$_POST[$parameter];
+        }
+        else if(($_SERVER['REQUEST_METHOD'] == 'PUT')&& (isset($GLOBALS["_PUT"]))) {
+                $value=$GLOBALS["_PUT"];
+        }
+        else if(($_SERVER['REQUEST_METHOD'] == 'DELETE')&& (isset($GLOBALS["_DELETE"]))){
+            $value=$GLOBALS["_DELETE"];
+        }
+        else if(($_SERVER['REQUEST_METHOD'] == 'PATCH')&& (isset($GLOBALS["_PATCH"]))){
+            $value=$GLOBALS["_PATCH"];
+        }
+        return $value;
+    }
+}   
+
+function setGlobal($requestMethod) {
+	//if($_SERVER['REQUEST_METHOD'] == 'PUT') {
+	if($requestMethod == 'PUT' || $requestMethod == 'DELETE') {
+		$form_data= json_encode(file_get_contents("php://input"));
+		$key_size=52;
+		$key=substr($form_data, 1, $key_size);
+		$acc_params=explode($key,$form_data);
+		array_shift($acc_params);
+		array_pop($acc_params);
+		foreach ($acc_params as $item){
+			$start_key=' name=\"';
+			$end_key='\"\r\n\r\n';
+			$start_key_pos=strpos($item,$start_key)+strlen($start_key);
+			$end_key_pos=strpos($item,$end_key);
+			
+			$key=substr($item, $start_key_pos, ($end_key_pos-$start_key_pos));
+			
+			$end_value='\r\n';
+			$value=substr($item, $end_key_pos+strlen($end_key), -strlen($end_value));
+			$TEMP[$key]=$value;
+		}
+		switch ($requestMethod) {
+			case 'PUT':
+				$GLOBALS["_PUT"]=$TEMP;
+				break;
+			case 'DELETE':
+				$GLOBALS["_DELETE"]=$TEMP;
+				break;
+		} 
+		
+	}
 }
