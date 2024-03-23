@@ -194,10 +194,12 @@ function returnData($statusCode, $data){
 
 	//Escribiendo el log para revisar los mensajes recibidos y los devueltos
 	//Escribiendo el dato de entrada
+	$method = $_SERVER['REQUEST_METHOD'];
 	logFile(date("d/M/Y h:i:s A") );
 	logFile('Url: ' . $_SERVER['REQUEST_URI']);
+	logFile('Método: ' . $method);
 	logFile('Datos de Entrada');
-	$method = $_SERVER['REQUEST_METHOD'];
+	
 	switch ($method) {
 		case 'GET':
 			logFile($_GET);
