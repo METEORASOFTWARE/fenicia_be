@@ -5,7 +5,9 @@ Class Usuario {
 	private $tabla = 'T_CLIENTES';
 	private $insert_fields = array();
 	private $insert_values = array();
-
+	private $update_fields = array();
+	private $update_values = array();
+	
 	public function addUsuario(){
 		$codigo  = $_POST['codigo'];
 		$nombre  = $_POST['nombre'];
@@ -64,5 +66,36 @@ Class Usuario {
 		return $result;
 	}
 
+
+	public function updateUsuario(){
+		$_PUT = getParameter('PUT');
+		$codigo= $_PUT['codigo'];
+		if (!empty($_PUT['pwaid'])) {
+			array_push($this->update_fields, "PWA_ID = ?");
+			array_push($this->update_values, $_PUT['pwaid']);
+		}
+		
+		// Query para actualizar el producto en la base de datos
+		$update_sql = "UPDATE " . $this->tabla . " SET " . implode(", ", $this->update_fields) . " WHERE COD_CLIE = ?";
+		
+		array_push($this->update_values, $codigo);
+	
+		$dbcontroller = new DBController();
+		$result = $dbcontroller->executeQuery($update_sql, $this->update_values);
+		if($result != 0){
+			$result = array("success"	=> true,
+							"name" 		=> "UPDATED",
+							"message" 	=> "Usuario Actualizado!",
+							"code"		=> "204.1"
+			);
+		} else {
+			$result = array("success"	=> false,
+							"name" 		=> "ERROR",
+							"message" 	=> "Usuario NO Actualizado!",
+							"code"		=> "500.1"
+			);
+		}
+		return $result;
+	}
 }
 ?>
