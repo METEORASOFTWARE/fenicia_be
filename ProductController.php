@@ -78,6 +78,7 @@ elseif ($method == 'PUT') {
 		die();
 	} else {
 		setGlobal($method);
+		$body = parse_str(file_get_contents('php://input'), $_PUT);
 		if (empty($_PUT['codigo'])) {
 			$statusCode = 400;
 			$rawData =	array(	"success" 	=> false,
