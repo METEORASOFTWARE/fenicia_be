@@ -14,6 +14,7 @@ Class Product {
 		$nombre  = $_POST['nombre'];
 		$usuario = $_POST['usuario'];
 		$descripcion = $_POST['descripcion'];
+		$agrextra = $_POST['agrextra'];
 
 		$this->insert_fields = array(
 			'COD_PRODUCTO'	=> 	'?',
@@ -33,7 +34,7 @@ Class Product {
 			0,
 			 "'" . $usuario . "'",
 			 "'A29'",
-			 224,
+			 "'" . $agrextra . "'",
 			 "'" . $descripcion . "'"
 		);
 
