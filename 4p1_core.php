@@ -279,39 +279,51 @@ if (!function_exists("getVariable")){
         return $value;
     }
 }   
+function parserFormData() {
+	$form_data= json_encode(file_get_contents("php://input"));
+	$key_size=52;
+	$key=substr($form_data, 1, $key_size);
+	$acc_params=explode($key,$form_data);
+	array_shift($acc_params);
+	array_pop($acc_params);
+	foreach ($acc_params as $item){
+		$start_key=' name=\"';
+		$end_key='\"\r\n\r\n';
+		$start_key_pos=strpos($item,$start_key)+strlen($start_key);
+		$end_key_pos=strpos($item,$end_key);
+		
+		$key=substr($item, $start_key_pos, ($end_key_pos-$start_key_pos));
+		
+		$end_value='\r\n';
+		$value=substr($item, $end_key_pos+strlen($end_key), -strlen($end_value));
+		$TEMP[$key]=$value;
+	}
+	return $TEMP;
+}
+
+function parserXWwwFormUrlEncoded() {
+	parse_str(file_get_contents("php://input"), $TEMP);
+	return $TEMP;
+}
 
 function setGlobal($requestMethod) {
-	//if($_SERVER['REQUEST_METHOD'] == 'PUT') {
 	if($requestMethod == 'PUT' || $requestMethod == 'DELETE') {
-		$form_data= json_encode(file_get_contents("php://input"));
-		$key_size=52;
-		$key=substr($form_data, 1, $key_size);
-		$acc_params=explode($key,$form_data);
-		array_shift($acc_params);
-		array_pop($acc_params);
-		foreach ($acc_params as $item){
-			$start_key=' name=\"';
-			$end_key='\"\r\n\r\n';
-			$start_key_pos=strpos($item,$start_key)+strlen($start_key);
-			$end_key_pos=strpos($item,$end_key);
-			
-			$key=substr($item, $start_key_pos, ($end_key_pos-$start_key_pos));
-			
-			$end_value='\r\n';
-			$value=substr($item, $end_key_pos+strlen($end_key), -strlen($end_value));
-			$TEMP[$key]=$value;
-		}
+		$contentType = explode(";",$_SERVER["CONTENT_TYPE"])[0];
+		switch ($contentType) {
+			case 'multipart/form-data':
+				$TEMP = parserFormData();
+				break;
+			case 'application/x-www-form-urlencoded':
+				$TEMP = parserXWwwFormUrlEncoded();
+				break;
+		} 
 		switch ($requestMethod) {
 			case 'PUT':
-				//parse_str(file_get_contents("php://input"), $GLOBALS["_PUT"]);
 				$GLOBALS["_PUT"]=$TEMP;
 				break;
 			case 'DELETE':
-				//parse_str(file_get_contents("php://input"), $GLOBALS["_DELETE"]);
 				$GLOBALS["_DELETE"]=$TEMP;
 				break;
 		} 
-		//var_dump($GLOBALS["_PUT"]); 
-		
 	}
 }

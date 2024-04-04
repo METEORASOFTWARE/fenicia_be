@@ -42,10 +42,14 @@ class DBController {
 							"code"			=> "503.2",
 							"sql_error" => json_encode(sqlsrv_errors())  . " / SQL: " . $query
 						);
+						sqlsrv_rollback( $conn );
 						echo returnData(503, $respuesta);
 						die();
 				}
+				/*echo "SQL: " . $query;
+				echo json_encode($values);*/
 				$affectedRows = sqlsrv_rows_affected( $stmt);
+				sqlsrv_commit( $conn );
 				return $affectedRows;
     }
 

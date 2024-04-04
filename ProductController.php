@@ -78,14 +78,16 @@ elseif ($method == 'PUT') {
 		die();
 	} else {
 		setGlobal($method);
-		if (empty($_PUT['codigo'])) {
+
+		//if (empty($GLOBALS["_PUT"]['codigo'])) {
+		if (empty(getVariable('PUT','codigo'))) {			
 			$statusCode = 400;
 			$rawData =	array(	"success" 	=> false,
 								"name" 		=> "BAD REQUEST",
 								"message" 	=> "Parametro codigo del Producto NO enviado.",
 								"code"		=> "400.1"
 			);
-		} elseif (empty($_PUT['nombre']) && empty($_PUT['descripcion']) && empty($_PUT['unidad']) && empty($_PUT['agrupacion_extra'])) {
+		} elseif (empty(getVariable('PUT','nombre')) && empty(getVariable('PUT','descripcion')) && empty(getVariable('PUT','unidad')) && empty(getVariable('PUT','agrupacion_extra'))) {
 			$statusCode = 400;
 			$rawData =	array(	"success" 	=> false,
 								"name" 		=> "BAD REQUEST",
