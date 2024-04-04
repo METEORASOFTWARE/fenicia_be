@@ -208,12 +208,10 @@ function returnData($statusCode, $data){
 			logFile($_POST);
 		  	break;
 		case 'PUT':
-			$_PUT = getParameter('PUT');
-			logFile($_PUT);
+			logFile(getParameter('PUT'));
 			break;
 		case 'DELETE':
-			$_DELETE = getParameter('DELETE');
-			logFile($_DELETE);
+			logFile(getParameter('DELETE'));
 			break;
 		  }
 	//Escribiendo el dato de salida
@@ -263,6 +261,25 @@ if (!function_exists("getParameter")){
     }
 }   
 
+if (!function_exists("getVariable")){
+    function getVariable($parameter, $variable) {
+        $value=null;
+        if(($_SERVER['REQUEST_METHOD'] == 'POST')&& (isset($_POST[$parameter][$variable]))){
+            $value=$_POST[$parameter][$variable];
+        }
+        else if(($_SERVER['REQUEST_METHOD'] == 'PUT')&& (isset($GLOBALS["_PUT"][$variable]))) {
+                $value=$GLOBALS["_PUT"][$variable];
+        }
+        else if(($_SERVER['REQUEST_METHOD'] == 'DELETE')&& (isset($GLOBALS["_DELETE"][$variable]))){
+            $value=$GLOBALS["_DELETE"][$variable];
+        }
+        else if(($_SERVER['REQUEST_METHOD'] == 'PATCH')&& (isset($GLOBALS["_PATCH"][$variable]))){
+            $value=$GLOBALS["_PATCH"][$variable];
+        }
+        return $value;
+    }
+}   
+
 function setGlobal($requestMethod) {
 	//if($_SERVER['REQUEST_METHOD'] == 'PUT') {
 	if($requestMethod == 'PUT' || $requestMethod == 'DELETE') {
@@ -286,12 +303,15 @@ function setGlobal($requestMethod) {
 		}
 		switch ($requestMethod) {
 			case 'PUT':
+				//parse_str(file_get_contents("php://input"), $GLOBALS["_PUT"]);
 				$GLOBALS["_PUT"]=$TEMP;
 				break;
 			case 'DELETE':
+				//parse_str(file_get_contents("php://input"), $GLOBALS["_DELETE"]);
 				$GLOBALS["_DELETE"]=$TEMP;
 				break;
 		} 
+		//var_dump($GLOBALS["_PUT"]); 
 		
 	}
 }
