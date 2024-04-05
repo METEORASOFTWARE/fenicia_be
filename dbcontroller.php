@@ -4,7 +4,7 @@ class DBController {
 	private $host = "190.242.40.162, 3405";
 	private $user = "sa";
 	private $password = "General123";
-	private $database = "cel823e";
+	private $database = "cel823e2";
 
 	function __construct() {
 		$conn = $this->connectDB();
