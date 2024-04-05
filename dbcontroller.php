@@ -4,7 +4,7 @@ class DBController {
 	private $host = "190.242.40.162, 3405";
 	private $user = "sa";
 	private $password = "General123";
-	private $database = "cel823e";
+	private $database = "cel823e2";
 
 	function __construct() {
 		$conn = $this->connectDB();
@@ -31,30 +31,30 @@ class DBController {
 	}
 
 	function executeQuery($query, $values) {
-
-        $conn = $this->connectDB();
-				$stmt = sqlsrv_query( $conn, $query, $values);
-				if ( $stmt === false ) {
-						http_response_code(503);
-						$respuesta = array(	"success" 	=> false,
-							"name" 			=> "INTERNAL SERVER ERROR",
-							"message" 	=> "No se pudo guardar la informacion en la Base de Datos en el servidor " . $this->host . " Db: " . $this->database,
-							"code"			=> "503.2",
-							"sql_error" => json_encode(sqlsrv_errors())  . " / SQL: " . $query
-						);
-						sqlsrv_rollback( $conn );
-						echo returnData(503, $respuesta);
-						die();
-				}
-				/*echo "SQL: " . $query;
-				echo json_encode($values);*/
-				$affectedRows = sqlsrv_rows_affected( $stmt);
-				sqlsrv_commit( $conn );
-				return $affectedRows;
+        $conn = $this->conn;
+		$stmt = sqlsrv_query( $conn, $query, $values);
+		if ( $stmt === false ) {
+				http_response_code(503);
+				$respuesta = array(	"success" 	=> false,
+					"name" 			=> "INTERNAL SERVER ERROR",
+					"message" 	=> "No se pudo guardar la informacion en la Base de Datos en el servidor " . $this->host . " Db: " . $this->database,
+					"code"			=> "503.2",
+					"sql_error" => json_encode(sqlsrv_errors())  . " / SQL: " . $query
+				);
+				sqlsrv_rollback( $conn );
+				echo returnData(503, $respuesta);
+				die();
+		}
+		/*echo "SQL: " . $query;
+		echo json_encode($values);*/
+		$affectedRows = sqlsrv_rows_affected( $stmt);
+		sqlsrv_commit( $conn );
+		return $affectedRows;
     }
 
 	function executeSelectQuery($query) {
-		$result = sqlsrv_query($this->conn,$query);
+		$conn = $this->conn;
+		$result = sqlsrv_query($conn, $query);
 		if( $result === false ) {
 			http_response_code(503);
 			$respuesta = array(	"success" 	=> false,

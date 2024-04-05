@@ -65,28 +65,28 @@ Class Product {
 		$_PUT = getParameter('PUT');
 		$codigo= $_PUT['codigo'];
 		if (!empty($_PUT['nombre'])) {
-			array_push($this->update_fields, "NOM_PRODUCTO = ?");
+			array_push($this->update_fields, "NOM_PRODUCTO = (?)");
 			array_push($this->update_values, $_PUT['nombre']);
 		}
 		
 		if (!empty($_PUT['descripcion'])) {
-			array_push($this->update_fields, "DESC_GONDOLA = ?");
+			array_push($this->update_fields, "DESC_GONDOLA = (?)");
 			//array_push($this->update_values, mb_convert_encoding($_PUT['descripcion'], 'UTF-8', 'Windows-1252'));
 			array_push($this->update_values, $_PUT['descripcion']);
 		}
 		
 		if (!empty($_PUT['unidad'])) {
-			array_push($this->update_fields, "COD_UNIDAD = ?");
+			array_push($this->update_fields, "COD_UNIDAD = (?)");
 			array_push($this->update_values, $_PUT['unidad']);
 		}
 		
-		if (!empty($_PUT['agrupacion_extra'])) {
-			array_push($this->update_fields, "AGRUPACION_EXTRA = ?");
-			array_push($this->update_values, $_PUT['agrupacion_extra']);
+		if (!empty($_PUT['agrextra'])) {
+			array_push($this->update_fields, "AGRUPACION_EXTRA = (?)");
+			array_push($this->update_values, $_PUT['agrextra']);
 		}
 		
 		// Query para actualizar el producto en la base de datos
-		$update_sql = "UPDATE " . $this->tabla . " SET " . implode(", ", $this->update_fields) . " WHERE COD_PRODUCTO = ?";
+		$update_sql = "UPDATE " . $this->tabla . " SET " . implode(", ", $this->update_fields) . " WHERE COD_PRODUCTO = (?)";
 		
 		array_push($this->update_values, $codigo);
 		/*var_dump($this->update_fields);

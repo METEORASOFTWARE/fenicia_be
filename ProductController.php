@@ -87,7 +87,7 @@ elseif ($method == 'PUT') {
 								"message" 	=> "Parametro codigo del Producto NO enviado.",
 								"code"		=> "400.1"
 			);
-		} elseif (empty(getVariable('PUT','nombre')) && empty(getVariable('PUT','descripcion')) && empty(getVariable('PUT','unidad')) && empty(getVariable('PUT','agrupacion_extra'))) {
+		} elseif (empty(getVariable('PUT','nombre')) && empty(getVariable('PUT','descripcion')) && empty(getVariable('PUT','unidad')) && empty(getVariable('PUT','agrextra'))) {
 			$statusCode = 400;
 			$rawData =	array(	"success" 	=> false,
 								"name" 		=> "BAD REQUEST",
