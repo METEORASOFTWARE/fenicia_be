@@ -6,6 +6,8 @@ Class ImageProduct {
 	private $tabla = 'R_PRODUCTO_IMAGENES';
 	private $insert_fields = array();
 	private $insert_values = array();
+	private $delete_fields = array();
+	private $delete_values = array();
 
 	public function addImageProduct(){
 		$codigo  = $_POST['codigo'];
@@ -61,5 +63,44 @@ Class ImageProduct {
 		}
 		return $result;
 	}
+
+	public function delImageProduct(){
+		$_DELETE = getParameter('PUT');
+		$codigo = $_DELETE['codigo'];
+		$consecutivo  = $_DELETE['consecutivo'];
+
+		$this->delete_fields = array(
+			'COD_PRODUCTO = (?)',
+			'CONSECUTIVO = (?)'
+		 );
+
+		 $this->delete_values = array(
+			$codigo,
+			$consecutivo 
+		);
+
+		// Delete record
+		$delete_sql = 'DELETE FROM ' . $this->tabla
+			. ' WHERE ' . implode(' AND ', array_values($this->delete_fields)) ;
+
+		$dbcontroller = new DBController();
+		$result = $dbcontroller->executeQuery($delete_sql, $this->delete_values);
+		if($result != 0){
+			$result = array("success"	=> true,
+							"name" 		=> "DELETED",
+							"message"    => "Imagen de Producto Borrada!",
+							"url"		=> $url,
+							"code"		=> "200.2"
+			);
+		} else {
+			$result = array("success"	=> false,
+							"name" 		=> "ERROR",
+							"message" => "Imagen de Producto NO Borrada!",
+							"code"		=> "500.1"
+			);
+		}
+
+		return $result;
+	}	
 }
 ?>

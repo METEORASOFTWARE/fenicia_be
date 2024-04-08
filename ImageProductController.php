@@ -51,6 +51,47 @@ if ($method == 'POST') {
 		echo returnData($statusCode, $rawData);
 	}
 } // if ($method == 'POST')
+elseif ($method == 'DELETE') {
+	$token = getBearerToken();
+	$message = '';
+	if ( !SessionValidateR2($token, $message) ) {
+		$respuesta = array(	"success" 	=> false,
+							"name" 		=> "UNAUTHORIZED",
+							"message" 	=> "La sesion del Usuario ha expirado. Se requiere un nuevo Token.",
+							"code"		=> "401.1"
+		);
+		echo returnData(401, $respuesta);
+		die();
+	} else {
+		setGlobal($method);
+		if (empty(getVariable('DELETE','codigo'))) {
+			$statusCode = 400;
+			$rawData =	array(	"success" 	=> false,
+								"name" 			=> "BAD REQUEST",
+								"message" 	=> "Parametro codigo del Producto NO enviado.",
+								"code"			=> "400.1"
+			);
+		} elseif (empty(getVariable('DELETE','consecutivo'))) {
+			$statusCode = 400;
+			$rawData =	array(	"success" 	=> false,
+								"name" 			=> "BAD REQUEST",
+								"message" 	=> "Parametro consecutivo NO enviado.",
+								"code"			=> "400.2"
+			);
+		// elseif (empty(getVariable('DELETE','consecutivo')))
+		} else {
+			$ImageProduct 	= new ImageProduct();
+			$rawData = $ImageProduct->delImageProduct();
+
+			if(empty($rawData)) {
+				$statusCode = 500;
+			} else {
+				$statusCode = 200;
+			}
+		}
+		echo returnData($statusCode, $rawData);
+	}
+} // elseif ($method == 'DELETE')
 elseif ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
 		echo returnData(200, '');
   	exit;
