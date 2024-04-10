@@ -15,6 +15,7 @@ Class Product {
 		$usuario = $_POST['usuario'];
 		$descripcion = $_POST['descripcion'];
 		$agrextra = $_POST['agrextra'];
+		$tipotrueque = $_POST['tipotrueque'];  // 2.03.260
 
 		$this->insert_fields = array(
 			'COD_PRODUCTO'	=> 	'?',
@@ -24,7 +25,8 @@ Class Product {
 			'COD_CLIE' 			=> 	'?',
 			'TIPOI' 				=> 	'?',
 			'AGRUPACION_EXTRA' 	=> 	'?',
-			'DESC_GONDOLA' 	=> 	'?'
+			'DESC_GONDOLA' 	=> 	'?',
+			'SW_INV_SERIALIZADO' 	=> 	'?'
 		 );
 
 		$this->insert_values = array(
@@ -35,7 +37,8 @@ Class Product {
 			 "'" . $usuario . "'",
 			 "'A29'",
 			 "'" . $agrextra . "'",
-			 "'" . $descripcion . "'"
+			 "'" . $descripcion . "'",
+			 "'" . $tipotrueque . "'"
 		);
 
 		// Insert record

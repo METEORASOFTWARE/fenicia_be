@@ -52,6 +52,14 @@ if ($method == 'POST') {
 								"message" 	=> "Parametro descripcion del Producto NO enviado.",
 								"code"			=> "400.5"
 			);
+		// 2.03.260
+		} elseif (empty($_POST['tipotrueque'])) {
+			$statusCode = 400;
+			$rawData =	array(	"success" 	=> false,
+								"name" 			=> "BAD REQUEST",
+								"message" 	=> "Tipo Donación/Trueque del Producto NO enviado.",
+								"code"			=> "400.5"
+			);
 		} else {
 			$Product 	= new Product();
 			$rawData = $Product->addProduct();
