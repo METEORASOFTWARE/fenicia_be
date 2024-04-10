@@ -30,9 +30,10 @@ if ($method == 'GET') {
 		$elemntData 	= $ElementosPorGrupo->getAllElementosPorGrupo($AgrupacionExtra);
 
 		if(empty($elemntData)) {
+			// 2.03 258+3, cambia texto
 			$statusCode = 404;
 			$rawData 	= array("success" 	=> false,
-								"name" 		=> "Datos No Encontrados",
+								"name" 		=> "Categoría sin Ofertas",
 								"code"		=> "404.2"
 			);
 		} else {

@@ -31,7 +31,7 @@ if ($method == 'GET') {
 		if(empty($elemntData)) {
 			$statusCode = 404;
 			$rawData 	= array("success" 	=> false,
-								"name" 		=> "Datos No Encontrados",
+								"name" 		=> "Sin imágenes asociadas",
 								"code"		=> "404.2"
 			);
 		} else {
