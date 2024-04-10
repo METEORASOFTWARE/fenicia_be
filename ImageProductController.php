@@ -81,7 +81,11 @@ elseif ($method == 'DELETE') {
 		// elseif (empty(getVariable('DELETE','consecutivo')))
 		} else {
 			$ImageProduct 	= new ImageProduct();
-			$rawData = $ImageProduct->delImageProduct();
+			$_DELETE = getParameter('DELETE');
+			$consecutivo  = $_DELETE['consecutivo'];
+			$codigo = $_DELETE['codigo'];
+	
+			$rawData = $ImageProduct->delImageProduct($consecutivo, $codigo);
 
 			if(empty($rawData)) {
 				$statusCode = 500;
