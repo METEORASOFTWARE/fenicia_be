@@ -101,7 +101,7 @@ Class Product {
 			$result = array("success"	=> true,
 							"name" 		=> "UPDATED",
 							"message" 	=> "Producto Actualizado!",
-							"code"		=> "204.1"
+							"code"		=> "200.1"
 			);
 		} else {
 			$result = array("success"	=> false,

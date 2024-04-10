@@ -1,5 +1,29 @@
 <?php
 require_once("ParFenicia.php");
+define("DIRECTORIO_IMAGENES", '/var/www/html/imagenes/');
+
+function delete($url, &$error, &$error_code){
+  $error  = '';
+  $return = false;
+  if ($url === false || strlen($url) === 0) {
+    $error = 'La url está vacía. No se pudo borrar el archivo.';
+    $error_code = "500.10";
+  } else {
+
+    $elements =explode("/",$url);
+    $ultimo = count($elements) - 1;
+    $name_image_file = DIRECTORIO_IMAGENES . trim($elements[$ultimo]);
+
+    //Borrando el archivo
+    if (!unlink($name_image_file)) {
+      $error = 'No se pudo borrar el archivo ' . $name_image_file . '!';
+      $error_code = "500.11";
+    } else {
+        $return = true;
+    }   
+  }
+  return $return;
+}
 
 function upload(&$url, &$error, &$error_code){
   //$img_file = $_FILES["imagen"];
@@ -14,20 +38,20 @@ function upload(&$url, &$error, &$error_code){
   $error  = '';
   $url    = '';
   $return = false;
-  $directorio =  '/var/www/html/imagenes/';
+  $directorio =  DIRECTORIO_IMAGENES;
   if ($img_file === false) {
     $error = 'La cadena NO es un dato Base64.';
-    $error_code = "400.4";
+    $error_code = "500.4";
   } else {
     if (!isset($img_file)) {
       $error = 'No se subió ningún archivo!';
-      $error_code = "400.5";
+      $error_code = "500.5";
     } else {
 
       // Validando q tenga un tamaño
       if (strlen($image_parts[1]) == 0) {
         $error = 'El archivo subido está vacío!';
-        $error_code = "400.6";
+        $error_code = "500.6";
       } else {
 
         // Validando tipo
@@ -35,7 +59,7 @@ function upload(&$url, &$error, &$error_code){
         if (!ValidateImage($img_type)) {  
         //if (!$img_type) {
           $error = 'El archivo subido NO es una imagen.';
-          $error_code = "400.7";
+          $error_code = "500.7";
           //die('El archivo subido NO es una imagen.');
         } else {
 
@@ -46,11 +70,11 @@ function upload(&$url, &$error, &$error_code){
           //Granado el archivo
           if (!$fp = fopen($image_new_file, 'w')) {
             $error =  "Error al intentar abrir el archivo (" . $image_new_file . "). Revisar permisos en la carpeta destino!";
-            $error_code = "400.8";
+            $error_code = "500.8";
           } else {
             if (fwrite($fp, $img_file) === FALSE) {
               $error = "Error al intentar guardar el archivo (" . $image_new_file . "). Revisar permisos en la carpeta destino!";
-              $error_code = "400.9";
+              $error_code = "500.9";
             } else {
               // Moviendo el archivo
               $ParFenicia 	= new ParFenicia();
