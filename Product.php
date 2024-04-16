@@ -87,7 +87,12 @@ Class Product {
 			array_push($this->update_fields, "AGRUPACION_EXTRA = (?)");
 			array_push($this->update_values, $_PUT['agrextra']);
 		}
-		
+		// 2.02.261+
+		if (!empty($_PUT['tipotrueque'])) {
+			array_push($this->update_fields, "SW_INV_SERIALIZADO = (?)");
+			array_push($this->update_values, $_PUT['tipotrueque']);
+		}
+
 		// Query para actualizar el producto en la base de datos
 		$update_sql = "UPDATE " . $this->tabla . " SET " . implode(", ", $this->update_fields) . " WHERE COD_PRODUCTO = (?)";
 		
